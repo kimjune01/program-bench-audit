@@ -33,41 +33,86 @@ No source-blind, offline solver can resolve these (a recall-only test, or a byte
 | typst | bundled_font_data |
 | zstd | recall |
 
-## Grader-caution: self-capturing oracle (29 programs, 12 vacuous-risk)
+## Grader-caution: self-capturing oracle (29 programs)
 
-The grader writes its own golden from the reference run. Where the golden is bundled it grades byte-identity-to-reference (a weak check, not a contract); where it is absent (the conditional form, marked) it passes any output. Do not trust a pass from these as correct without confirming the golden is present and contractual.
+The grader writes its own golden from the reference run, so it grades byte-identity-to-reference (a weak oracle, not a contract). A golden-presence audit found 26 confirmed dormant (the golden is bundled, so the conditional `if not exists` branch never fires) and **none confirmed vacuous**: the vacuous pass is a latent risk, not an active one. Treat a pass from these as reference-identity at best, not correctness.
 
-| program | conditional (vacuous-risk) |
+| program | golden | conditional form |
+|---|---|---|
+| age | dormant | yes |
+| argc | dormant |  |
+| bedtools2 | dormant |  |
+| blake3 | dormant |  |
+| chafa | dormant | yes |
+| clog-cli | dormant |  |
+| dropbear | dormant | yes |
+| ffmpeg | dormant | yes |
+| git-trim | dormant | yes |
+| goimports-reviser | dormant | yes |
+| gomplate | dormant | yes |
+| jplot | dormant | yes |
+| json-tui | dormant |  |
+| lz4 | dormant |  |
+| masscan | dormant |  |
+| mdbook | inconclusive |  |
+| pandoc | dormant |  |
+| pigz | dormant |  |
+| rumdl | inconclusive |  |
+| samtools | dormant | yes |
+| solar | dormant | yes |
+| stgit | dormant | yes |
+| trdsql | dormant |  |
+| tree-sitter | dormant |  |
+| typst | dormant | yes |
+| walk | dormant |  |
+| xsv | inconclusive |  |
+| xz | dormant |  |
+| zstd | dormant |  |
+
+## Scale tier: unbenchable by coverage (38 programs beyond the skip-list)
+
+Soft tier, still model-blind and re-derivable but threshold-dependent. Blast radius > 458 distinct exact-output obligations, where the conjunctive pass rate q^N falls below 1% even at a charitable q=0.99. Not a per-test witness; a coverage argument, anchored by the benchmark's reported zero Fully Resolved. A runner may also skip these.
+
+| program | blast radius (distinct obligations) |
 |---|---|
-| age | yes |
-| argc |  |
-| bedtools2 |  |
-| blake3 |  |
-| chafa | yes |
-| clog-cli |  |
-| dropbear | yes |
-| ffmpeg | yes |
-| git-trim | yes |
-| goimports-reviser | yes |
-| gomplate | yes |
-| jplot | yes |
-| json-tui |  |
-| lz4 |  |
-| masscan |  |
-| mdbook |  |
-| pandoc |  |
-| pigz |  |
-| rumdl |  |
-| samtools | yes |
-| solar | yes |
-| stgit | yes |
-| trdsql |  |
-| tree-sitter |  |
-| typst | yes |
-| walk |  |
-| xsv |  |
-| xz |  |
-| zstd |  |
+| pandoc | 2746 |
+| quickjs | 2263 |
+| miller | 1788 |
+| gomplate | 1366 |
+| yq | 1264 |
+| lightningcss | 1250 |
+| jq | 1189 |
+| sqlite | 1171 |
+| treemd | 1156 |
+| fselect | 1032 |
+| argc | 1016 |
+| srgn | 1008 |
+| solar | 796 |
+| luajit | 776 |
+| fzf | 771 |
+| run | 768 |
+| trdsql | 763 |
+| tinycc | 700 |
+| lua | 687 |
+| rumdl | 682 |
+| xcp | 656 |
+| fx | 650 |
+| hush | 625 |
+| bat | 605 |
+| bat | 605 |
+| tuc | 594 |
+| lnav | 579 |
+| nsh | 568 |
+| ripgrep | 545 |
+| angle-grinder | 537 |
+| sd | 536 |
+| jsonschema | 530 |
+| ninja | 514 |
+| melody | 508 |
+| hck | 502 |
+| amber | 496 |
+| stgit | 495 |
+| chamber | 470 |
 
 ## Benchable subset: report Fully Resolved over these (171 programs)
 

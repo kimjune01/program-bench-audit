@@ -6,9 +6,12 @@ produced by reading **all 201 hidden test suites** (public on Hugging Face at
 
 ## If you are running ProgramBench, start here
 
-You can adopt the audit's subset directly, the way a runner already adopted the
-[SWE-bench Pro determinacy audit](https://github.com/scaleapi/SWE-bench_Pro-os/issues/108) to skip its
-unsolvable cases. Two artifacts in `findings/05_runner_subset.md`:
+This audit is a **conflict-of-interest-free escape hatch**. Reporting Fully Resolved over the full 201
+includes tasks no source-blind solver can resolve; excluding them on your own judgment moves the very
+score you are reporting, which is a conflict of interest. The escape is to exclude on a list you did
+not author and cannot tilt. A runner already did exactly this with the
+[SWE-bench Pro determinacy audit](https://github.com/scaleapi/SWE-bench_Pro-os/issues/108), adopting its
+subset to skip the unsolvable cases. Two artifacts in `findings/05_runner_subset.md`:
 
 - **Skip-list (24 programs)** — no source-blind, offline solver can resolve these (a recall-only test,
   or a byte-exact render the contract does not fix). Running a model on them spends build budget
@@ -30,6 +33,11 @@ three properties:
 A separate **grader-caution list (29 programs, 12 vacuous-risk)** flags suites whose graders write their
 own golden from the reference run; do not trust a pass from those as "correct" without confirming the
 golden is present and contractual.
+
+You do not need to cite this audit to use it. The method is in `METHODOLOGY.md` and the spine
+re-derives by grep over the public suites, so you can reproduce the subset yourself and report it as
+your own finding. Citing the artifact simply saves the derivation and puts a model-independent reason
+on the record for why you ran a subset rather than the full 201.
 
 ## What the audit found
 

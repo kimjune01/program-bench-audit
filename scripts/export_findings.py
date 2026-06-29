@@ -57,7 +57,8 @@ with open(os.path.join(out, "04_per_program.md"), "w") as f:
 
 # 6. runner-facing: skip-list, grader-caution, benchable subset
 excl = q("SELECT DISTINCT program, mechanism FROM witnesses WHERE status='verified' ORDER BY program")
-cap = q("SELECT program, conditional FROM capture_smell WHERE capture_files>0 ORDER BY program")
+cap = q("SELECT program, conditional, COALESCE(severity,'?') FROM capture_smell WHERE capture_files>0 ORDER BY program")
+scale = q("SELECT program, blast_radius FROM programs WHERE blast_radius>458 AND program NOT IN (SELECT program FROM witnesses WHERE status='verified') ORDER BY blast_radius DESC")
 contest = [r[0] for r in q("SELECT program FROM programs WHERE status='contestable' ORDER BY program")]
 excl_progs = {p for p, _ in excl}
 bench = [r[0] for r in q("SELECT program FROM programs WHERE status NOT IN ('contestable') ORDER BY program") if r[0] not in excl_progs]
@@ -68,10 +69,15 @@ with open(os.path.join(out, "05_runner_subset.md"), "w") as f:
     f.write("No source-blind, offline solver can resolve these (a recall-only test, or a byte-exact render the contract does not fix). Running a model on them spends build budget on a foregone fail; excluding them stops the headline conflating reconstruction with recall.\n\n| program | reason |\n|---|---|\n")
     for p, m in excl:
         f.write(f"| {p} | {m} |\n")
-    f.write(f"\n## Grader-caution: self-capturing oracle ({len(cap)} programs, {sum(1 for _, c in cap if c)} vacuous-risk)\n\n")
-    f.write("The grader writes its own golden from the reference run. Where the golden is bundled it grades byte-identity-to-reference (a weak check, not a contract); where it is absent (the conditional form, marked) it passes any output. Do not trust a pass from these as correct without confirming the golden is present and contractual.\n\n| program | conditional (vacuous-risk) |\n|---|---|\n")
-    for p, c in cap:
-        f.write(f"| {p} | {'yes' if c else ''} |\n")
+    dorm = sum(1 for _, _, s in cap if s == 'dormant')
+    f.write(f"\n## Grader-caution: self-capturing oracle ({len(cap)} programs)\n\n")
+    f.write(f"The grader writes its own golden from the reference run, so it grades byte-identity-to-reference (a weak oracle, not a contract). A golden-presence audit found {dorm} confirmed dormant (the golden is bundled, so the conditional `if not exists` branch never fires) and **none confirmed vacuous**: the vacuous pass is a latent risk, not an active one. Treat a pass from these as reference-identity at best, not correctness.\n\n| program | golden | conditional form |\n|---|---|---|\n")
+    for p, c, s in cap:
+        f.write(f"| {p} | {s} | {'yes' if c else ''} |\n")
+    f.write(f"\n## Scale tier: unbenchable by coverage ({len(scale)} programs beyond the skip-list)\n\n")
+    f.write("Soft tier, still model-blind and re-derivable but threshold-dependent. Blast radius > 458 distinct exact-output obligations, where the conjunctive pass rate q^N falls below 1% even at a charitable q=0.99. Not a per-test witness; a coverage argument, anchored by the benchmark's reported zero Fully Resolved. A runner may also skip these.\n\n| program | blast radius (distinct obligations) |\n|---|---|\n")
+    for p, n in scale:
+        f.write(f"| {p} | {n} |\n")
     f.write(f"\n## Benchable subset: report Fully Resolved over these ({len(bench)} programs)\n\n")
     f.write("No witness found and not contestable. This is a floor on the benchable set, not a certificate (the audit is one-sided).\n\n")
     f.write(", ".join(f"`{p}`" for p in bench) + "\n")
