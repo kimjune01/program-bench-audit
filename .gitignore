@@ -1,0 +1,3 @@
+data/audit.db-wal
+data/audit.db-shm
+__pycache__/
