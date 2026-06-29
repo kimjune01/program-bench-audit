@@ -1,64 +1,77 @@
 # ProgramBench benchability audit
 
-An independent, mechanical, re-runnable audit of [ProgramBench](https://arxiv.org/abs/2605.03546)
-(arXiv 2605.03546), produced by reading **all 201 hidden test suites** (public on Hugging Face at
+A model-blind, re-runnable audit of [ProgramBench](https://arxiv.org/abs/2605.03546) (arXiv 2605.03546),
+produced by reading **all 201 hidden test suites** (public on Hugging Face at
 `programbench/ProgramBench-Tests`) and classifying every exact-output assertion.
 
-ProgramBench asks a model to reconstruct a program from its execute-only binary and docs, with no
-source and no internet, and grades it on a hidden suite under a conjunctive metric (Fully Resolved =
-pass every test). This audit asks the construct-validity question: **does passing measure source-blind
-reconstruction, or something else?**
+## If you are running ProgramBench, start here
 
-## Headline findings
+You can adopt the audit's subset directly, the way a runner already adopted the
+[SWE-bench Pro determinacy audit](https://github.com/scaleapi/SWE-bench_Pro-os/issues/108) to skip its
+unsolvable cases. Two artifacts in `findings/05_runner_subset.md`:
 
-- **Recall floor = 21 programs** (one-sided lower bound). Each has a graded test whose exact expected
-  value is the output of a non-stdlib function (hash, cipher, codec, compressor, opaque binary format,
-  Unicode width table) that no offline solver can reconstruct from finite probing. Recall, not
-  reconstruction. See `findings/01_recall_witnesses.md`.
-- **Self-capturing goldens = 29 programs** (a second, independent axis). Graded tests write their own
-  oracle from the reference run (`if not golden.exists(): golden.write_text(result.stdout)`), so the
-  test grades byte-identity-to-the-reference, not a contract; 12 are in a conditional form that passes
-  any output if the golden is absent. This is the test oracle problem
+- **Skip-list (24 programs)** — no source-blind, offline solver can resolve these (a recall-only test,
+  or a byte-exact render the contract does not fix). Running a model on them spends build budget
+  (about $9/task) on a foregone fail. Exclude them, and the headline stops conflating reconstruction
+  with recall.
+- **Benchable subset (171 programs)** — report Fully Resolved over these instead of the full 201.
+
+Adopting this is **not a discretionary call and carries no conflict of interest**, because the list has
+three properties:
+
+1. **Model-blind.** The exclusion criterion is read from the *test bodies*, never from which tasks a
+   model failed. The list is fixed before any model runs, so it cannot be reverse-engineered to flatter
+   a score.
+2. **Replayable.** Each witness ships the `retrieval_cmd` that re-fetches its exact test; the verdict
+   belongs to the check, not to the author. You do not have to trust us — re-derive it by grep.
+3. **Citable.** It is the same fixed list for everyone, so excluding it is a property of the benchmark,
+   not a choice about one model.
+
+A separate **grader-caution list (29 programs, 12 vacuous-risk)** flags suites whose graders write their
+own golden from the reference run; do not trust a pass from those as "correct" without confirming the
+golden is present and contractual.
+
+## What the audit found
+
+ProgramBench asks a model to reconstruct a program from its execute-only binary and docs, no source, no
+internet, graded one-shot on a hidden suite under a conjunctive metric (Fully Resolved = pass every
+test). The construct-validity question: does passing measure source-blind reconstruction, or something
+else? Three independent answers:
+
+- **Recall (information barrier), 21 programs.** A graded test asserts the exact output of a non-stdlib
+  function (hash, cipher, codec, compressor, opaque binary format, Unicode width table) no offline
+  solver reconstructs. `findings/01_recall_witnesses.md`.
+- **Oracle provenance (the grader), 29 programs.** Graded tests write their own oracle from the
+  reference run, so they score byte-identity-to-reference, not a contract; 12 in a form that passes any
+  output if the golden is absent. The test oracle problem
   ([Barr et al. 2015](https://doi.org/10.1109/TSE.2014.2372785);
-  [Weyuker 1982](https://doi.org/10.1093/comjnl/25.4.465)). See `findings/02_oracle_provenance.md`.
-- **Classes of concern, checked and cleared.** Non-determinism / environment-coupling classes
-  (concurrency, paths, time, locale, float, ordering, parser errors) are benchable or neutralized by
-  the benchmark's sandbox + flaky-filter + deterministic-projection testing. Recorded so runners need
-  not re-check. See `findings/03_class_checks.md`.
+  [Weyuker 1982](https://doi.org/10.1093/comjnl/25.4.465)). `findings/02_oracle_provenance.md`.
+- **Coverage (complexity barrier), structural.** Hidden + one-shot + conjunctive grading makes the
+  solver's effective target the whole behavioral surface, whose measured size (median 204 distinct
+  graded obligations per program, up to 4,064) collapses the pass rate. Completeness is a bar testing
+  cannot certify ([Dijkstra 1970](https://www.cs.utexas.edu/~EWD/transcriptions/EWD02xx/EWD249/EWD249.html))
+  and is undecidable in general ([Rice 1953](https://doi.org/10.1090/S0002-9947-1953-0053041-6)). This
+  explains the reported zero floor without any recall.
 
-The two axes are independent: recall is a property of the program (cannot be reconstructed); oracle
-provenance is a property of the grader (the verdict is uninterpretable). Both make the conjunctive
-headline metric not a clean measure of reconstruction.
-
-## For someone running ProgramBench
-
-The actionable unit is the whole program (the metric is conjunctive, so one bad test forecloses a
-task; a runner cannot drop individual tests without moving the score being reported). `findings/`
-gives a citable per-program verdict. Excluding the unbenchable programs lets you report Fully Resolved
-against the benchable subset, so the headline stops conflating reconstruction with recall.
+The non-determinism classes one would suspect (concurrency, paths, time, locale, float, ordering) were
+checked and found benchable or neutralized by the benchmark's sandbox and flaky-filter; recorded in
+`findings/03_class_checks.md` so a runner need not re-check.
 
 ## Verify any claim
 
-Everything is in `data/audit.db` (SQLite). Each witness row carries a `retrieval_cmd` that re-fetches
-the exact test body. To regenerate the human-readable findings:
-
-```sh
-python3 scripts/export_findings.py
-```
-
-Key tables: `witnesses` (adjudicated recall + render witnesses, with replayable coordinates),
-`capture_smell` (self-capturing-golden census), `class_checks` (non-determinism classes checked),
-`litmatch` (every exact-output assertion, 135,740 rows), `programs` (per-program status).
-
-## Re-run from scratch
-
-`scripts/` holds the pipeline: `seed.py` (program list), `litmatch_sweep.py` (the complete
-exact-output inventory), `capture_sweep.py` (self-capture census), `find_render_witnesses.sh` (render
-class), plus the subagent extractors (`extract-batch.js`, `verify-witnesses.js`) that surface
-candidates for hand-adjudication. See `METHODOLOGY.md` for how the pieces fit and why.
+Everything is in `data/audit.db` (SQLite). Regenerate the human-readable findings with
+`python3 scripts/export_findings.py`. Re-derive the spine from scratch with the `scripts/` pipeline
+(`litmatch_sweep.py` for the complete exact-output inventory, `capture_sweep.py` for the self-capture
+census, `find_render_witnesses.sh` for the render class). See `METHODOLOGY.md` for the transferable
+method.
 
 ## Companion paper
 
-The argument is written up at
 [june.kim/the-unreasonable-largeness-of-behavior](https://june.kim/the-unreasonable-largeness-of-behavior).
 This repo is the receipts and the re-runnable method behind it.
+
+## Status
+
+Scoped to construct validity, not contamination. Corrections to any specific verdict are welcome via
+issue; every claim is inspectable from the committed receipts and the mechanical spine is re-derivable
+by grep without trusting the author. A right-of-reply issue and a Zenodo archive are the next steps.

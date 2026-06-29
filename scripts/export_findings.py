@@ -55,5 +55,27 @@ with open(os.path.join(out, "04_per_program.md"), "w") as f:
     for prog, task, lang, st in q("SELECT program, task, lang, status FROM programs ORDER BY status, program"):
         f.write(f"| {prog} | {task} | {lang} | {st} |\n")
 
+# 6. runner-facing: skip-list, grader-caution, benchable subset
+excl = q("SELECT DISTINCT program, mechanism FROM witnesses WHERE status='verified' ORDER BY program")
+cap = q("SELECT program, conditional FROM capture_smell WHERE capture_files>0 ORDER BY program")
+contest = [r[0] for r in q("SELECT program FROM programs WHERE status='contestable' ORDER BY program")]
+excl_progs = {p for p, _ in excl}
+bench = [r[0] for r in q("SELECT program FROM programs WHERE status NOT IN ('contestable') ORDER BY program") if r[0] not in excl_progs]
+with open(os.path.join(out, "05_runner_subset.md"), "w") as f:
+    f.write("# For a benchmark runner: the model-blind subset\n\n")
+    f.write("This list is computed from the **test bodies**, never from any model's results, so adopting it is not a discretionary call and carries no conflict of interest. Every row is re-derivable by grep over the public suites (each witness ships a `retrieval_cmd` in the DB); you do not have to trust the author.\n\n")
+    f.write(f"## Skip-list: exclude from Fully Resolved ({len(excl)} programs)\n\n")
+    f.write("No source-blind, offline solver can resolve these (a recall-only test, or a byte-exact render the contract does not fix). Running a model on them spends build budget on a foregone fail; excluding them stops the headline conflating reconstruction with recall.\n\n| program | reason |\n|---|---|\n")
+    for p, m in excl:
+        f.write(f"| {p} | {m} |\n")
+    f.write(f"\n## Grader-caution: self-capturing oracle ({len(cap)} programs, {sum(1 for _, c in cap if c)} vacuous-risk)\n\n")
+    f.write("The grader writes its own golden from the reference run. Where the golden is bundled it grades byte-identity-to-reference (a weak check, not a contract); where it is absent (the conditional form, marked) it passes any output. Do not trust a pass from these as correct without confirming the golden is present and contractual.\n\n| program | conditional (vacuous-risk) |\n|---|---|\n")
+    for p, c in cap:
+        f.write(f"| {p} | {'yes' if c else ''} |\n")
+    f.write(f"\n## Benchable subset: report Fully Resolved over these ({len(bench)} programs)\n\n")
+    f.write("No witness found and not contestable. This is a floor on the benchable set, not a certificate (the audit is one-sided).\n\n")
+    f.write(", ".join(f"`{p}`" for p in bench) + "\n")
+    f.write(f"\nContestable, held out of both pending inspection: {', '.join('`'+c+'`' for c in contest)}.\n")
+
 con.close()
 print("findings/ regenerated:", os.listdir(out))
