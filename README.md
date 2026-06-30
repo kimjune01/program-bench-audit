@@ -78,8 +78,8 @@ checked and found benchable or neutralized by the benchmark's sandbox and flaky-
 Everything is in `data/audit.db` (SQLite). Regenerate the human-readable findings with
 `python3 scripts/export_findings.py`. Re-derive the spine from scratch with the `scripts/` pipeline
 (`litmatch_sweep.py` for the complete exact-output inventory, `capture_sweep.py` for the self-capture
-census, `find_render_witnesses.sh` for the render class). See `METHODOLOGY.md` for the transferable
-method.
+census, `find_render_witnesses.sh` for the render class). Step-by-step repro is in `PROCEDURE.md`; the
+transferable method is in `METHODOLOGY.md`.
 
 ## Status
 
