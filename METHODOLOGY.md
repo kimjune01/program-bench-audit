@@ -10,7 +10,7 @@ benchmark, the skill is source-blind reconstruction; the threat is that passing 
 **recall** of memorized algorithms, or **byte-identity to a reference** that is not a contract. You
 prove the threat with **witnesses**: a single graded test that a correct-but-source-blind solver
 cannot pass. Under a conjunctive metric (pass-all-tests), one witness per program forecloses the task,
-so the witness is the unit and the search is one-sided — a witness proves unbenchable; absence of a
+so the witness is the unit and the search is one-sided: a witness proves unbenchable; absence of a
 found witness proves nothing.
 
 ## Verifiable knowledge, not assertion
@@ -30,7 +30,7 @@ The first version of this audit used subagents to surface candidate tests, which
 by construction (substring, return code, length, membership, `!= `, `== <int>`). The exact-output set
 is the complete denominator; recall witnesses are a subset of it. The complete read caught a program
 (`lz4`) the sampled read had mislabeled benchable. **Subagents are reliable extractors and unreliable
-judges** — they invent escape reasons ("input is fixed, hardcode it"; "pre-compute the hash"; "both
+judges**: they invent escape reasons ("input is fixed, hardcode it"; "pre-compute the hash"; "both
 files are bundled"). Let them extract coordinates; you adjudicate.
 
 ## The adjudication criterion (recall)
@@ -87,7 +87,7 @@ ordering, float, parser errors) mostly does **not** yield witnesses, because a w
 neutralizes them: a shared sandbox makes `$HOME`-derived paths reproduce, a flaky-filter drops
 tests the reference itself fails on rerun, and the suite tests deterministic projections (a parallel
 copier is checked on copied-content equality, not interleaving) instead of pinning races. Checking
-these and **recording the negatives** is a service to whoever runs the benchmark — and it pre-empts the
+these and **recording the negatives** is a service to whoever runs the benchmark, and it pre-empts the
 objection that your floor is confounded by sloppy non-determinism.
 
 ## Operational
