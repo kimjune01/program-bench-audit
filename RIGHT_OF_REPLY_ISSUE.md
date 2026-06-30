@@ -11,7 +11,7 @@ I read all 201 hidden test suites from the public `programbench/ProgramBench-Tes
 
 For anyone running the benchmark, the audit ships a **model-blind subset**: a 24-program skip-list (no source-blind solver resolves these) and a 171-program benchable subset to report Fully Resolved over. The list is computed from the test bodies, never from any model's results, so adopting it carries no conflict of interest, and every verdict is re-derivable by grep over the public suites without trusting me.
 
-Repo with the database, per-program receipts, and the re-runnable pipeline: <REPO URL>. Companion write-up: https://june.kim/the-unreasonable-largeness-of-behavior
+Repo with the database, per-program receipts, and the re-runnable pipeline: https://github.com/kimjune01/program-bench-audit. Companion write-up: https://june.kim/the-unreasonable-largeness-of-behavior
 
 **Right of reply.** If the team disputes any specific verdict, I will incorporate corrections and cut a new versioned release. The mechanical spine (the literal-match inventory and the witness retrieval commands) is re-derivable by grep, so corrections can be checked against the suites rather than against my word.
 
