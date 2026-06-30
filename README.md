@@ -60,7 +60,7 @@ answers:
   obligations per program, up to 4,064) collapses the pass rate. Completeness is a bar testing cannot
   certify ([Dijkstra 1970](https://www.cs.utexas.edu/~EWD/transcriptions/EWD02xx/EWD249/EWD249.html)) and
   is undecidable in general ([Rice 1953](https://doi.org/10.1090/S0002-9947-1953-0053041-6)). This
-  explains the reported zero floor without any recall. A soft scale tier of 37 large programs the
+  explains the reported zero floor without any recall. A soft scale tier of 38 large programs the
   coverage barrier rules out is in `findings/05_runner_subset.md`.
 
 A finding for benchmark makers: recall tracks the **kind** of a program's core and its implementation

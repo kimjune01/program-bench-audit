@@ -65,7 +65,7 @@ bench = [r[0] for r in q("SELECT program FROM programs WHERE status NOT IN ('con
 with open(os.path.join(out, "05_runner_subset.md"), "w") as f:
     f.write("# For a benchmark runner: the model-blind subset\n\n")
     f.write("This list is computed from the **test bodies**, never from any model's results, so adopting it is not a discretionary call and carries no conflict of interest. Every row is re-derivable by grep over the public suites (each witness ships a `retrieval_cmd` in the DB); you do not have to trust the author.\n\n")
-    f.write(f"## Skip-list: exclude from Fully Resolved ({len(excl)} programs)\n\n")
+    f.write(f"## Skip-list: exclude from % Resolved ({len(excl)} programs)\n\n")
     f.write("No source-blind, offline solver can resolve these (a recall-only test, or a byte-exact render the contract does not fix). Running a model on them spends build budget on a foregone fail; excluding them stops the headline conflating reconstruction with recall.\n\n| program | reason |\n|---|---|\n")
     for p, m in excl:
         f.write(f"| {p} | {m} |\n")
@@ -75,10 +75,10 @@ with open(os.path.join(out, "05_runner_subset.md"), "w") as f:
     for p, c, s in cap:
         f.write(f"| {p} | {s} | {'yes' if c else ''} |\n")
     f.write(f"\n## Scale tier: unbenchable by coverage ({len(scale)} programs beyond the skip-list)\n\n")
-    f.write("Soft tier, still model-blind and re-derivable but threshold-dependent. Blast radius > 458 distinct exact-output obligations, where the conjunctive pass rate q^N falls below 1% even at a charitable q=0.99. Not a per-test witness; a coverage argument, anchored by the benchmark's reported zero Fully Resolved. A runner may also skip these.\n\n| program | blast radius (distinct obligations) |\n|---|---|\n")
+    f.write("Soft tier, still model-blind and re-derivable but threshold-dependent. Blast radius > 458 distinct exact-output obligations, where the conjunctive pass rate q^N falls below 1% even at a charitable q=0.99. Not a per-test witness; a coverage argument, anchored by the benchmark's reported zero % Resolved. A runner may also skip these.\n\n| program | blast radius (distinct obligations) |\n|---|---|\n")
     for p, n in scale:
         f.write(f"| {p} | {n} |\n")
-    f.write(f"\n## Benchable subset: report Fully Resolved over these ({len(bench)} programs)\n\n")
+    f.write(f"\n## Benchable subset: report % Resolved over these ({len(bench)} programs)\n\n")
     f.write("No witness found and not contestable. This is a floor on the benchable set, not a certificate (the audit is one-sided).\n\n")
     f.write(", ".join(f"`{p}`" for p in bench) + "\n")
     f.write(f"\nContestable, held out of both pending inspection: {', '.join('`'+c+'`' for c in contest)}.\n")

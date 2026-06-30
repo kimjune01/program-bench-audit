@@ -2,7 +2,7 @@
 
 This list is computed from the **test bodies**, never from any model's results, so adopting it is not a discretionary call and carries no conflict of interest. Every row is re-derivable by grep over the public suites (each witness ships a `retrieval_cmd` in the DB); you do not have to trust the author.
 
-## Skip-list: exclude from Fully Resolved (24 programs)
+## Skip-list: exclude from % Resolved (24 programs)
 
 No source-blind, offline solver can resolve these (a recall-only test, or a byte-exact render the contract does not fix). Running a model on them spends build budget on a foregone fail; excluding them stops the headline conflating reconstruction with recall.
 
@@ -71,7 +71,7 @@ The grader writes its own golden from the reference run, so it grades byte-ident
 
 ## Scale tier: unbenchable by coverage (38 programs beyond the skip-list)
 
-Soft tier, still model-blind and re-derivable but threshold-dependent. Blast radius > 458 distinct exact-output obligations, where the conjunctive pass rate q^N falls below 1% even at a charitable q=0.99. Not a per-test witness; a coverage argument, anchored by the benchmark's reported zero Fully Resolved. A runner may also skip these.
+Soft tier, still model-blind and re-derivable but threshold-dependent. Blast radius > 458 distinct exact-output obligations, where the conjunctive pass rate q^N falls below 1% even at a charitable q=0.99. Not a per-test witness; a coverage argument, anchored by the benchmark's reported zero % Resolved. A runner may also skip these.
 
 | program | blast radius (distinct obligations) |
 |---|---|
@@ -114,7 +114,7 @@ Soft tier, still model-blind and re-derivable but threshold-dependent. Blast rad
 | stgit | 495 |
 | chamber | 470 |
 
-## Benchable subset: report Fully Resolved over these (171 programs)
+## Benchable subset: report % Resolved over these (171 programs)
 
 No witness found and not contestable. This is a floor on the benchable set, not a certificate (the audit is one-sided).
 
