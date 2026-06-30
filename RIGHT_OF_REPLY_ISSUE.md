@@ -15,4 +15,4 @@ Repo with the database, per-program receipts, and the re-runnable pipeline: http
 
 **Right of reply.** If the team disputes any specific verdict, I will incorporate corrections and cut a new versioned release. The mechanical spine (the literal-match inventory and the witness retrieval commands) is re-derivable by grep, so corrections can be checked against the suites rather than against my word.
 
-Archived for citation at Zenodo: <CONCEPT DOI> (concept, all versions), <v1.0.0 DOI>. <!-- fill after archiving -->
+Archived for citation at Zenodo: 10.5281/zenodo.21083756 (concept, all versions) and 10.5281/zenodo.21083757 (v1.0.0).
