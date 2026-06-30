@@ -75,7 +75,7 @@ method.
 
 ## Companion paper
 
-[june.kim/the-unreasonable-largeness-of-behavior](https://june.kim/the-unreasonable-largeness-of-behavior).
+[june.kim/programbench-measures-recall](https://june.kim/programbench-measures-recall).
 This repo is the receipts and the re-runnable method behind it.
 
 ## Status
