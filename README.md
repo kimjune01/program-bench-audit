@@ -87,7 +87,7 @@ transferable method is in `METHODOLOGY.md`.
 
 Scoped to construct validity, not contamination. Corrections to any specific verdict are welcome via
 issue; every claim is inspectable from the committed receipts, and the mechanical spine re-derives by
-grep without trusting the author. Archived at Zenodo (v1.0.0; concept DOI [10.5281/zenodo.21083756](https://doi.org/10.5281/zenodo.21083756), which resolves to the latest version). A right-of-reply issue to the ProgramBench authors (draft in `RIGHT_OF_REPLY_ISSUE.md`) is the remaining step.
+grep without trusting the author. Archived at Zenodo (v1.0.0; concept DOI [10.5281/zenodo.21083756](https://doi.org/10.5281/zenodo.21083756), which resolves to the latest version). A right-of-reply issue to the ProgramBench authors is filed at [facebookresearch/ProgramBench#50](https://github.com/facebookresearch/ProgramBench/issues/50) (text in `RIGHT_OF_REPLY_ISSUE.md`).
 
 ## License
 

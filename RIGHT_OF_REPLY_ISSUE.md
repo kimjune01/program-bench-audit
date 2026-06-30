@@ -1,5 +1,5 @@
-<!-- Paste into a new issue on the ProgramBench repo (facebookresearch/ProgramBench).
-     Title suggestion: "Construct-validity audit: a model-blind benchable subset (right of reply offered)" -->
+<!-- Posted to facebookresearch/ProgramBench#50: https://github.com/facebookresearch/ProgramBench/issues/50
+     Title: "Construct-validity audit: a model-blind benchable subset (right of reply offered)" -->
 
 Thanks for building this. The no-internet, no-install sandbox and the execute-only binary are a real contribution, and I went in trying to take the construction seriously. My question is a narrow one: does the primary % Resolved metric measure source-blind reconstruction the way the paper frames it, or something else? So this is a construct-validity question. I'm not alleging contamination.
 
