@@ -1,5 +1,7 @@
 # ProgramBench benchability audit
 
+[![DOI](https://zenodo.org/badge/1284631537.svg)](https://doi.org/10.5281/zenodo.21083756)
+
 A model-blind, re-runnable audit of [ProgramBench](https://arxiv.org/abs/2605.03546) (arXiv 2605.03546),
 produced by reading **all 201 released test directories** (the 200 benchmark tasks plus one empty
 placeholder; public on Hugging Face at `programbench/ProgramBench-Tests`) and classifying every
@@ -85,8 +87,7 @@ transferable method is in `METHODOLOGY.md`.
 
 Scoped to construct validity, not contamination. Corrections to any specific verdict are welcome via
 issue; every claim is inspectable from the committed receipts, and the mechanical spine re-derives by
-grep without trusting the author. A right-of-reply issue to the ProgramBench authors (draft in
-`RIGHT_OF_REPLY_ISSUE.md`) and a Zenodo archive are the next steps.
+grep without trusting the author. Archived at Zenodo (v1.0.0; concept DOI [10.5281/zenodo.21083756](https://doi.org/10.5281/zenodo.21083756), which resolves to the latest version). A right-of-reply issue to the ProgramBench authors (draft in `RIGHT_OF_REPLY_ISSUE.md`) is the remaining step.
 
 ## License
 
