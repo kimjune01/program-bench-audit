@@ -86,4 +86,4 @@ by grep without trusting the author. A right-of-reply issue and a Zenodo archive
 
 ## License
 
-Dual copyleft. Content (data, findings, docs) under [CC BY-SA 4.0](LICENSES/CC-BY-SA-4.0.txt); code (`scripts/`) under [GPL-3.0-or-later](LICENSES/GPL-3.0.txt). See [LICENSE](LICENSE). The audited paper ([arXiv:2605.03546](https://arxiv.org/abs/2605.03546)) is its authors' work, linked not redistributed.
+Network copyleft, both halves. Content (data, findings, docs) under [CC BY-SA-NS](LICENSES/CC-BY-SA-NS.md) (CC BY-SA 4.0 plus a Network Services clause; canonical at [june.kim/cc-by-sa-ns](https://june.kim/cc-by-sa-ns)); code (`scripts/`) under [AGPL-3.0-or-later](LICENSES/AGPL-3.0.txt). See [LICENSE](LICENSE). Put a derivative behind a network service and the corresponding source goes to its users. The audited paper ([arXiv:2605.03546](https://arxiv.org/abs/2605.03546)) is its authors' work, linked not redistributed.

@@ -1,22 +1,26 @@
 # License
 
-This repository is dual-licensed, copyleft on both halves.
+This repository is dual-licensed, network-copyleft on both halves.
 
 - **Content** — the audit data (`data/`), the findings (`findings/`), the SQLite
   database, and the documentation (`README.md`, `METHODOLOGY.md`,
-  `RIGHT_OF_REPLY_ISSUE.md`) — is licensed under **Creative Commons
-  Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)**.
-  Full text: `LICENSES/CC-BY-SA-4.0.txt`.
+  `RIGHT_OF_REPLY_ISSUE.md`) — is licensed under **CC BY-SA-NS**: Creative
+  Commons Attribution-ShareAlike 4.0 plus a Network Services clause that a plain
+  CC BY-SA 4.0 relicense cannot escape. Terms: `LICENSES/CC-BY-SA-NS.md`
+  (canonical at <https://june.kim/cc-by-sa-ns>); the CC BY-SA 4.0 base it builds
+  on is in `LICENSES/CC-BY-SA-4.0.txt`.
 
-- **Code** — everything under `scripts/` — is licensed under the **GNU General
-  Public License v3.0 or later (GPL-3.0-or-later)**.
-  Full text: `LICENSES/GPL-3.0.txt`.
+- **Code** — everything under `scripts/` — is licensed under the **GNU Affero
+  General Public License v3.0 or later (AGPL-3.0-or-later)**, the matching
+  network copyleft for software. Full text: `LICENSES/AGPL-3.0.txt`.
 
 Reuse the audit's findings, method, or skip-list freely under share-alike;
-re-derive the verdicts yourself with the scripts under the GPL.
+re-derive the verdicts yourself with the scripts under the AGPL. Either way, if
+you put a derivative behind a network service, the corresponding source goes to
+its users.
 
 The ProgramBench paper under audit (arXiv:2605.03546) is the work of its own
 authors under their own license and is not redistributed here. See
 <https://arxiv.org/abs/2605.03546>.
 
-SPDX-License-Identifier: CC-BY-SA-4.0 AND GPL-3.0-or-later
+SPDX-License-Identifier: LicenseRef-CC-BY-SA-NS AND AGPL-3.0-or-later
